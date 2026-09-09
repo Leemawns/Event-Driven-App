@@ -12,7 +12,7 @@ public class appGUI extends JFrame {
     private JLabel blankLabel, controlsLabel;
     private JButton blankButton, processB, confirmB, deleteB, finishB, newB, exitB;
 
-    private ProcessButtonHandler procBHandler;
+    private ProcessButtonHandler procbHandler;
     private ConfirmButtonHandler confbHandler;
     private DeleteButtonHandler deletebHandler;
     private FinishButtonHandler finbHandler;
@@ -33,8 +33,39 @@ public class appGUI extends JFrame {
         controlsLabel = new JLabel(" USER CONTROLS ", SwingConstants.RIGHT);
 
         processB = new JButton("Search For Item #" + (itemCount+1) + "To Cart");
-        procBHandler = new ProcessButtonHandler();
-        processB.addActionListener(procBHandler);
+        procbHandler = new ProcessButtonHandler();
+        processB.addActionListener(procbHandler);
+
+        confirmB = new JButton("Add Item #" + (itemCount+1) + "To Cart");
+        confbHandler = new ConfirmButtonHandler();
+        confirmB.addActionListener(confbHandler);
+
+        deleteB = new JButton("Delete Last Item From Cart");
+        deletebHandler = new DeleteButtonHandler;
+        deleteB.addActionListener(confbHandler);
+
+        finishB = new JButton("Check Out");
+        finbHandler = new FinishButtonHandler;
+        finishB.addActionListener(finbHandler);
+
+        newB = new JButton("Empty Cart - Start A New Order");
+        newbHandler = new NewButtonHandler;
+        newB.addActionListener(newbHandler);
+
+        exitB = new JButton("Exit (Close App)");
+        exitbHandler = new ExitButtonHandler;
+        exitB.addActionListener(exitbHandler);
+
+
+        confirmB.setEnabled(true);
+        deleteB.setEnabled(true);
+        finishB.setEnabled(true);
+
+
+        blankButton.setBackground(Color.DARK_GRAY);
+        blankButton.setVisible(false);
+
+
 
         Container pane = getContentPane();
 
