@@ -41,19 +41,19 @@ public class appGUI extends JFrame {
         confirmB.addActionListener(confbHandler);
 
         deleteB = new JButton("Delete Last Item From Cart");
-        deletebHandler = new DeleteButtonHandler;
+        deletebHandler = new DeleteButtonHandler();
         deleteB.addActionListener(confbHandler);
 
         finishB = new JButton("Check Out");
-        finbHandler = new FinishButtonHandler;
+        finbHandler = new FinishButtonHandler();
         finishB.addActionListener(finbHandler);
 
         newB = new JButton("Empty Cart - Start A New Order");
-        newbHandler = new NewButtonHandler;
+        newbHandler = new NewButtonHandler();
         newB.addActionListener(newbHandler);
 
         exitB = new JButton("Exit (Close App)");
-        exitbHandler = new ExitButtonHandler;
+        exitbHandler = new ExitButtonHandler();
         exitB.addActionListener(exitbHandler);
 
 
