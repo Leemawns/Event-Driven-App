@@ -188,6 +188,15 @@ public class appGUI extends JFrame {
             System.out.println("The Find Item Button Was Clicked...");
 //            try
 //            {
+//                String idS = idTextField.getText().trim();
+//                int itemID = Integer.parseInt(idS);
+//                String qtyS = qtyTextField.getText().trim();
+//                int itemQty = Integer.parseInt(qtyS);
+//
+//                FindItems.SearchForItemInInventoryFile();
+//            }
+//            catch
+//            {
 //
 //            }
 
