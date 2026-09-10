@@ -14,7 +14,7 @@ public class appGUI extends JFrame {
     private JLabel blankLabel, controlsLabel, idLabel, qtyLabel, itemLabel, cartLabel, totalLabel;
     private JButton blankButton, processB, confirmB, deleteB, finishB, newB, exitB;
     private JTextField blankTextField, blankTextFieldS, idTextField, qtyTextField, itemTextField, totalTextField;
-    private JTextField[] cartLineArray;
+    private JTextField[] cartLineArray = new JTextField[MAX_ITEMS];
 
     // declaring reference variables for each the event handlers associated with each
     // button the user may interact with.
@@ -42,7 +42,7 @@ public class appGUI extends JFrame {
         idLabel = new JLabel("Enter Item ID for Item #" + (itemCount+1) + ":", SwingConstants.RIGHT);
         qtyLabel = new JLabel("Enter Quanity for Item #" + (itemCount+1) + ":", SwingConstants.RIGHT);
         itemLabel = new JLabel("Details for Item #" + (itemCount+1) + ":", SwingConstants.RIGHT);
-        totalLabel = new JLabel("Current Subtotal for " + itemCount + " item(s):");
+        totalLabel = new JLabel("Current Subtotal for " + itemCount + " item(s):", SwingConstants.RIGHT);
         controlsLabel = new JLabel(" USER CONTROLS ", SwingConstants.RIGHT);
         cartLabel = new JLabel("Your Shopping Cart is Currently Empty", SwingConstants.CENTER);
 
@@ -52,6 +52,8 @@ public class appGUI extends JFrame {
         idTextField = new JTextField();
         qtyTextField = new JTextField();
         itemTextField = new JTextField();
+        totalTextField = new JTextField();
+
         for(int i = 0; i < MAX_ITEMS; i++)
         {
             cartLineArray[i] = new JTextField();
@@ -158,6 +160,12 @@ public class appGUI extends JFrame {
 
 
         // Adding buttons to the south panel
+        southPanel.add(controlsLabel);
+        controlsLabel.setHorizontalAlignment(JLabel.CENTER);
+        southPanel.add(blankButton);
+        southPanel.add(processB);       southPanel.add(confirmB);
+        southPanel.add(deleteB);        southPanel.add(finishB);
+        southPanel.add(newB);           southPanel.add(exitB);
     }
 
     public void centerFrame(int frameWidth, int frameHeight)
@@ -178,7 +186,10 @@ public class appGUI extends JFrame {
         {
 
             System.out.println("The Find Item Button Was Clicked...");
-
+//            try
+//            {
+//
+//            }
 
         }
     }
