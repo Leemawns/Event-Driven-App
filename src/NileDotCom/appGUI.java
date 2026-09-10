@@ -8,10 +8,16 @@ import java.awt.event.ActionListener;
 public class appGUI extends JFrame {
     private static final int WIDTH = 700;
     private static final int HEIGHT = 100;
+    private static final int MAX_ITEMS = 5;
 
-    private JLabel blankLabel, controlsLabel;
+
+    private JLabel blankLabel, controlsLabel, idLabel, qtyLabel, itemLabel, cartLabel;
     private JButton blankButton, processB, confirmB, deleteB, finishB, newB, exitB;
+    private JTextField blankTextField, blankTextFieldS, idTextField, qtyTextField, itemTextField, totalTextField;
+    private JTextField[] cartLineArray;
 
+    // declaring reference variables for each the event handlers associated with each
+    // button the user may interact with.
     private ProcessButtonHandler procbHandler;
     private ConfirmButtonHandler confbHandler;
     private DeleteButtonHandler deletebHandler;
@@ -27,11 +33,33 @@ public class appGUI extends JFrame {
         setTitle("Nile.com - FALL 2026");
         setSize(WIDTH, HEIGHT);
 
+
+        // These blank elements are just for creating whitespace in the grid layouts
         blankButton = new JButton(" ");
         blankLabel = new JLabel("", SwingConstants.RIGHT);
 
+        // Here are the JLabel object instantiations
+        idLabel = new JLabel("Enter Item ID for Item #" + (itemCount+1) + ":", SwingConstants.RIGHT);
+        qtyLabel = new JLabel("Enter Quanity for Item #" + (itemCount+1) + ":", SwingConstants.RIGHT);
+        itemLabel = new JLabel("Details for Item #" + (itemCount+1) + ":", SwingConstants.RIGHT);
         controlsLabel = new JLabel(" USER CONTROLS ", SwingConstants.RIGHT);
+        cartLabel = new JLabel("Your Shopping Cart is Currently Empty", SwingConstants.CENTER);
 
+        // Here are the JTextField object instantiations
+        blankTextField = new JTextField();
+        blankTextFieldS = new JTextField();
+        idTextField = new JTextField();
+        qtyTextField = new JTextField();
+        itemTextField = new JTextField();
+        for(int i = 0; i < MAX_ITEMS; i++)
+        {
+            cartLineArray[i] = new JTextField();
+        }
+
+
+
+        //-------------------------------------------------------------
+        // Instantiating buttons to and registering their handlers.
         processB = new JButton("Search For Item #" + (itemCount+1) + "To Cart");
         procbHandler = new ProcessButtonHandler();
         processB.addActionListener(procbHandler);
@@ -42,7 +70,7 @@ public class appGUI extends JFrame {
 
         deleteB = new JButton("Delete Last Item From Cart");
         deletebHandler = new DeleteButtonHandler();
-        deleteB.addActionListener(confbHandler);
+        deleteB.addActionListener(deletebHandler);
 
         finishB = new JButton("Check Out");
         finbHandler = new FinishButtonHandler();
@@ -56,10 +84,14 @@ public class appGUI extends JFrame {
         exitbHandler = new ExitButtonHandler();
         exitB.addActionListener(exitbHandler);
 
-
-        confirmB.setEnabled(true);
+        // Setting the initial properties for buttons and fields
+        confirmB.setEnabled(true); // disable until calculation complete
         deleteB.setEnabled(true);
-        finishB.setEnabled(true);
+        finishB.setEnabled(true); // disable until confirm is complete
+
+        itemTextField.setEditable(false);
+        totalTextField.setEditable(false);
+
 
 
         blankButton.setBackground(Color.DARK_GRAY);
@@ -67,29 +99,42 @@ public class appGUI extends JFrame {
 
 
 
+        // Cotainer to hold parts of the GUI
         Container pane = getContentPane();
 
+
+        // Grid layout with #rows, #columns, horizontal space, and vertical space respectively
         GridLayout grid6by2 = new GridLayout(6, 2, 8, 4);
         GridLayout grid7by2 = new GridLayout(7,2,8,4);
 
+
+        // Just making the panels to put into the north, center, and south parts of the pane container
         JPanel northPanel = new JPanel();
         JPanel centerPanel = new JPanel();
         JPanel southPanel = new JPanel();
 
+        // Setting the layout of each panel to the grid layouts made previously
         northPanel.setLayout(grid6by2);
         centerPanel.setLayout(grid7by2);
         southPanel.setLayout(grid6by2);
 
+
+        // Actually adding the panes to the container (GUI) here
         pane.add(northPanel, BorderLayout.NORTH);
         pane.add(centerPanel, BorderLayout.CENTER);
         pane.add(southPanel, BorderLayout.SOUTH);
 
+        //differentiating the sections by color
         pane.setBackground(Color.DARK_GRAY);
         northPanel.setBackground(Color.BLUE);
         centerPanel.setBackground(Color.LIGHT_GRAY);
         southPanel.setBackground(Color.GREEN);
 
+        // just so the frame is created within the center of the screen
         centerFrame(WIDTH, HEIGHT);
+
+        // adding labels to each grid in each panel of the gui;
+        northPanel.add(blankLabel);
     }
 
     public void centerFrame(int frameWidth, int frameHeight)
