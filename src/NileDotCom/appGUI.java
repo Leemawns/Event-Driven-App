@@ -91,12 +91,16 @@ public class appGUI extends JFrame {
 
         itemTextField.setEditable(false);
         totalTextField.setEditable(false);
-
-
+        blankTextField.setEditable(false);
+        blankTextField.setBackground(Color.DARK_GRAY);
+        blankTextField.setVisible(false);
 
         blankButton.setBackground(Color.DARK_GRAY);
         blankButton.setVisible(false);
 
+        blankTextFieldS.setEditable(false);
+        blankTextFieldS.setBackground(Color.DARK_GRAY);
+        blankTextFieldS.setVisible(true);
 
 
         // Cotainer to hold parts of the GUI
