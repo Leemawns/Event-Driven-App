@@ -11,7 +11,7 @@ public class appGUI extends JFrame {
     private static final int MAX_ITEMS = 5;
 
 
-    private JLabel blankLabel, controlsLabel, idLabel, qtyLabel, itemLabel, cartLabel;
+    private JLabel blankLabel, controlsLabel, idLabel, qtyLabel, itemLabel, cartLabel, totalLabel;
     private JButton blankButton, processB, confirmB, deleteB, finishB, newB, exitB;
     private JTextField blankTextField, blankTextFieldS, idTextField, qtyTextField, itemTextField, totalTextField;
     private JTextField[] cartLineArray;
@@ -42,6 +42,7 @@ public class appGUI extends JFrame {
         idLabel = new JLabel("Enter Item ID for Item #" + (itemCount+1) + ":", SwingConstants.RIGHT);
         qtyLabel = new JLabel("Enter Quanity for Item #" + (itemCount+1) + ":", SwingConstants.RIGHT);
         itemLabel = new JLabel("Details for Item #" + (itemCount+1) + ":", SwingConstants.RIGHT);
+        totalLabel = new JLabel("Current Subtotal for " + itemCount + " item(s):");
         controlsLabel = new JLabel(" USER CONTROLS ", SwingConstants.RIGHT);
         cartLabel = new JLabel("Your Shopping Cart is Currently Empty", SwingConstants.CENTER);
 
@@ -139,6 +140,24 @@ public class appGUI extends JFrame {
 
         // adding labels to each grid in each panel of the gui;
         northPanel.add(blankLabel);
+        northPanel.add(blankTextField);
+        northPanel.add(idLabel);
+        northPanel.add(idTextField);
+        northPanel.add(qtyLabel);
+        northPanel.add(qtyTextField);
+        northPanel.add(itemLabel);
+        northPanel.add(itemTextField);
+        northPanel.add(totalLabel);
+        northPanel.add(totalTextField);
+
+        totalLabel.setFont(new Font("Calibri", Font.BOLD,14));
+        totalLabel.setForeground(new Color(173, 216, 230));
+
+        northPanel.add(blankLabel);
+        northPanel.add(blankTextField);
+
+
+        // Adding buttons to the south panel
     }
 
     public void centerFrame(int frameWidth, int frameHeight)
