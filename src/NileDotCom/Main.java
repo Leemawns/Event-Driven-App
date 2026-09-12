@@ -17,7 +17,5 @@ public class Main
         aNewStore.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         aNewStore.setVisible(true);
-
-        FindItems.SearchForItemInInventoryFile();
     }
 }

@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.Scanner;
 
 public class FindItems {
-    public static void SearchForItemInInventoryFile()
+    public static InventoryItem SearchForItemInInventoryFile(String itemID)
     {
         File inputFile = new File("inventory.csv");
         FileReader inputFileReader = null;
@@ -18,41 +18,47 @@ public class FindItems {
 //        String searchItem = "22345532";
 //        String searchItem = "14";
 //        String searchItem = "ryxx34";
-        String searchItem = "RTX3452";
-
+//        String searchItem = "RTX3452";
 
         try {
             inputFileReader = new FileReader(inputFile);
             inputBufferedReader = new BufferedReader(inputFileReader);
 
-            System.out.println("Search Item Is: " + searchItem);
+            System.out.println("Search Item Is: " + itemID);
 
             inventoryLine = inputBufferedReader.readLine();
 
             while(inventoryLine != null){
                 sc = new Scanner(inventoryLine).useDelimiter("\\s*,\\s*");
                 itemIDFromFile = sc.next();
-                if(itemIDFromFile.equals(searchItem)){
+                if(itemIDFromFile.equals(itemID)){
                     System.out.println("Found It!");
-                    found = true;
-                    break;
+                    String id = itemIDFromFile;
+                    String desc = sc.next();
+                    boolean inStock = Boolean.parseBoolean(sc.next());
+                    int quantity = Integer.parseInt(sc.next());
+                    double price = Double.parseDouble(sc.next());
+
+                    InventoryItem retItem = new InventoryItem(id, desc, inStock,quantity, price);
+                    return retItem;
                 }
                 else
                 {
                     inventoryLine = inputBufferedReader.readLine();
                 }
             }
-            if(!found){
-                System.out.println("Search Item Not In File!");
-            }
+            System.out.println("Search Item Not In File!");
+            JOptionPane.showMessageDialog(null, "item ID " + itemID + " not in file", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return null;
         }
 
         catch(FileNotFoundException fileNotFound){
             JOptionPane.showMessageDialog(null, "Error: File not found", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return null;
         }
         catch(IOException ioException){
             JOptionPane.showMessageDialog(null, "Error: Problem reading from file", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return null;
         }
-
     }
 }
