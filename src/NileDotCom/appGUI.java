@@ -284,6 +284,8 @@ public class appGUI extends JFrame {
             subtotal+=cartEntryPrices[itemCount];
             itemCount++;
 
+            cartLabel.setText("Your Shopping Cart Currently Contains " + itemCount + " Item(s)");
+
             totalTextField.setText(String.format("$%.2f",subtotal));
             totalLabel.setText("Current Subtotal for " + itemCount + " item(s):");
             processB.setText("Search For Item #" + (itemCount+1));
@@ -391,6 +393,8 @@ public class appGUI extends JFrame {
         public void actionPerformed(ActionEvent e)
         {
             System.out.println("The Empty Cart Button Was Clicked...");
+
+            resetApp();
         }
     }
 
@@ -402,5 +406,41 @@ public class appGUI extends JFrame {
 
             System.exit(0);
         }
+    }
+
+    private void resetApp()
+    {
+        currItem = null;
+        entryPrice = 0;
+        subtotal = 0;
+        userItemQty = 0;
+        discount = 0;
+        itemCount = 0;
+
+
+        idLabel.setText("Enter Item ID for Item #" + (itemCount+1) + ":");
+        qtyLabel.setText("Enter Quanity for Item #" + (itemCount+1) + ":");
+        itemLabel.setText("Details for Item #" + (itemCount+1) + ":");
+        totalLabel.setText("Current Subtotal for " + itemCount + " item(s):");
+        cartLabel.setText("Your Shopping Cart is Currently Empty");
+
+        idTextField.setText("");
+        qtyTextField.setText("");
+        itemTextField.setText("");
+        totalTextField.setText("");
+
+        for(int i = 0; i < MAX_ITEMS; i++)
+        {
+            cartLineArray[i].setText("");
+        }
+
+        processB.setText("Search for Item #" + (itemCount+1));
+        confirmB.setText("Add Item #" + (itemCount+1) + " To Cart");
+
+        processB.setEnabled(true);
+        deleteB.setEnabled(false);
+        confirmB.setEnabled(false);
+        finishB.setEnabled(false);
+
     }
 }
