@@ -169,10 +169,11 @@ public class appGUI extends JFrame {
         northPanel.add(totalTextField);
 
         totalLabel.setFont(new Font("Calibri", Font.BOLD,14));
-        totalLabel.setForeground(new Color(173, 216, 230));
+        Color LIGHT_BLUE = new Color(173, 216, 230);
+        totalLabel.setForeground(LIGHT_BLUE);
+        itemLabel.setForeground(LIGHT_BLUE);
 
-        northPanel.add(blankLabel);
-        northPanel.add(blankTextField);
+
 
         centerPanel.add(cartLabel);
         centerPanel.add(cartLineArray[0]);
@@ -225,6 +226,7 @@ public class appGUI extends JFrame {
                         if(currItem.getQuantity() < userItemQty)
                         {
                             JOptionPane.showMessageDialog(null, "Insufficient stock. Only " + currItem.getQuantity() + " on hand. Please reduce the quantity.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                            qtyTextField.setText("");
                         }
                         else
                         {
@@ -246,7 +248,7 @@ public class appGUI extends JFrame {
                                 discount = 20;
                             }
                             entryPrice = (currItem.getPrice() * (double)userItemQty * (1.0 - ((double)discount/100)));
-                            itemTextField.setText(currItem.getID() + " " + currItem.getDesc() + " $" + String.format("%.2f", currItem.getPrice()) + " " + userItemQty + " " + discount + "% " + String.format("$%.2f",entryPrice));
+                            itemTextField.setText(currItem.getID() + " " + currItem.getDesc() + " $" + String.format("%,.2f", currItem.getPrice()) + " " + userItemQty + " " + discount + "% " + String.format("$%,.2f",entryPrice));
                             itemLabel.setText("Details for Item #" + (itemCount+1) + ":");
 
                             processB.setEnabled(false);
@@ -286,19 +288,31 @@ public class appGUI extends JFrame {
 
             cartLabel.setText("Your Shopping Cart Currently Contains " + itemCount + " Item(s)");
 
-            totalTextField.setText(String.format("$%.2f",subtotal));
+            totalTextField.setText(String.format("$%,.2f",subtotal));
             totalLabel.setText("Current Subtotal for " + itemCount + " item(s):");
             processB.setText("Search For Item #" + (itemCount+1));
             confirmB.setText("Add Item #" + (itemCount+1) + " To Cart");
 
-            confirmB.setEnabled(false);
-            processB.setEnabled(true);
+            if(itemCount == 5)
+            {
+                idTextField.setEditable(false);
+                idTextField.setVisible(false);
+                qtyTextField.setEditable(false);
+                qtyTextField.setVisible(false);
 
-            deleteB.setEnabled(true);
-            finishB.setEnabled(true);
+                processB.setEnabled(false);
+                confirmB.setEnabled(false);
+            }
+            else
+            {
+                confirmB.setEnabled(false);
+                processB.setEnabled(true);
+                deleteB.setEnabled(true);
+                finishB.setEnabled(true);
+            }
 
 
-            cartLineArray[itemCount-1].setText("Item " + itemCount + " - SKU: " + cartItems[itemCount-1].getID() + ", Desc: " + cartItems[itemCount-1].getDesc() + ", Price Ea. $" + cartItems[itemCount-1].getPrice() + ", Qty: " + cartQuantities[itemCount-1] + ", Total: " + String.format("$%.2f",cartEntryPrices[itemCount-1]));
+            cartLineArray[itemCount-1].setText("Item " + itemCount + " - SKU: " + cartItems[itemCount-1].getID() + ", Desc: " + cartItems[itemCount-1].getDesc() + ", Price Ea. $" + String.format("%,.2f", cartItems[itemCount-1].getPrice()) + ", Qty: " + cartQuantities[itemCount-1] + ", Total: " + String.format("$%,.2f",cartEntryPrices[itemCount-1]));
             idTextField.setText("");
             qtyTextField.setText("");
 
@@ -315,20 +329,38 @@ public class appGUI extends JFrame {
 
             itemCount--;
 
-            subtotal -= cartEntryPrices[itemCount];
+            idTextField.setVisible(true);
+            idTextField.setEditable(true);
+            qtyTextField.setVisible(true);
+            qtyTextField.setEditable(true);
 
+            subtotal -= cartEntryPrices[itemCount];
             idLabel.setText("Enter item ID for Item #" + (itemCount+1) + ":");
             qtyLabel.setText("Enter quantity for Item #" + (itemCount+1) + ":");
             totalLabel.setText("Current Subtotal for " + (itemCount) + " item(s):");
             cartLineArray[itemCount].setText("");
 
+            processB.setEnabled(true);
             processB.setText("Search for Item #" + (itemCount+1));
             confirmB.setText("Add Item #" + (itemCount+1) + " To Cart");
 
             itemTextField.setText("");
 
-            totalTextField.setText(String.format("$%.2f",subtotal));
+            totalTextField.setText(String.format("$%,.2f",subtotal));
 
+            if(itemCount == 0)
+            {
+                confirmB.setEnabled(false);
+                deleteB.setEnabled(false);
+                finishB.setEnabled(false);
+
+
+                cartLabel.setText("Your Shopping Cart is Currently Empty");
+            }
+            else
+            {
+                cartLabel.setText("Your Shopping Cart Currently Contains " + itemCount + " Item(s)");
+            }
         }
     }
 
@@ -350,40 +382,52 @@ public class appGUI extends JFrame {
 
             invoice.append("\nNumber of line items: " + itemCount + "\n");
 
-            invoice.append("\nItem$# / ID / Title / Price / Qty / Disc % / Subtotal:\n\n");
+            invoice.append("\nItem# / ID / Title / Price / Qty / Disc % / Subtotal:\n\n");
 
             try
             {
 
-                FileWriter transactionFile = new FileWriter("transactions.csv", true);
+                FileWriter transactionFile = new FileWriter("transaction.csv", true);
 
                 for(int itemNum = 0; itemNum < itemCount; itemNum++)
                 {
                     InventoryItem cur = cartItems[itemNum];
-                    transactionFile.write(transactionID + ", " + cur.getID() + ", " + cur.getDesc() + ", " + cur.getPrice() + ", " + cartQuantities[itemNum] + ", " + ((double)cartDiscounts[itemNum] / 100) + ", " + String.format("$%.2f",cartEntryPrices[itemNum]) + ", " + invoiceDateTime + "\n");
-                    invoice.append((itemNum+1) + ". " + cur.getID() + " " + String.format("$%.2f",cur.getPrice()) + " " + cartQuantities[itemNum] + " " + ((double)cartDiscounts[itemNum] / 100) + "% " + cartEntryPrices[itemNum] + "\n");
+                    transactionFile.write(transactionID + ", " + cur.getID() + ", " + cur.getDesc() + ", " + String.format("%.2f", cur.getPrice()) + ", " + cartQuantities[itemNum] + ", " + ((double)cartDiscounts[itemNum] / 100) + ", " + String.format("$%,.2f",cartEntryPrices[itemNum]) + ", " + invoiceDateTime + "\n");
+                    invoice.append((itemNum+1) + ". " + cur.getID() + " " + cur.getDesc() + " " + String.format("$%,.2f",cur.getPrice()) + " " + cartQuantities[itemNum] + " " + cartDiscounts[itemNum] + "% " + String.format("$%,.2f",cartEntryPrices[itemNum]) + "\n");
                 }
 
-                invoice.append("\n\n" + String.format("$%.2f", subtotal) + "\n");
+                invoice.append("\n\nOrder Subtotal: " + String.format("$%.2f", subtotal) + "\n");
 
-                invoice.append("\nTax rate:\t" + "6%\n");
+                invoice.append("\nTax rate:    " + "6%\n");
 
                 double taxAmount = subtotal*0.06;
                 double total = subtotal*1.06;
 
-                invoice.append("\nTax amount:\t" + String.format("$%.2f", taxAmount) + "\n");
+                invoice.append("\nTax amount:   " + String.format("$%.2f", taxAmount) + "\n");
 
-                invoice.append("\nORDER TOTAL:\t" + String.format("$%.2f",total) + "\n");
+                invoice.append("\nORDER TOTAL:   " + String.format("$%.2f",total) + "\n");
 
                 invoice.append("\nThanks for shopping at Nile Dot Com!");
 
                 JOptionPane.showMessageDialog(null, invoice.toString(), "Nile Dot Com - FINAL INVOICE", JOptionPane.INFORMATION_MESSAGE);
 
+                transactionFile.write("\n");
                 transactionFile.close();
+
+                idTextField.setEditable(false);
+                idTextField.setVisible(false);
+                qtyTextField.setEditable(false);
+                qtyTextField.setVisible(false);
+
+                processB.setEnabled(false);
+                finishB.setEnabled(false);
+                deleteB.setEnabled(false);
+                finishB.setEnabled(false);
+
             }
             catch(IOException ioE)
             {
-                JOptionPane.showMessageDialog(null, "Reached an IOException when attempting to open transactions.csv", "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Reached an IOException when attempting to open transaction.csv", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -425,7 +469,11 @@ public class appGUI extends JFrame {
         cartLabel.setText("Your Shopping Cart is Currently Empty");
 
         idTextField.setText("");
+        idTextField.setVisible(true);
+        idTextField.setEditable(true);
         qtyTextField.setText("");
+        qtyTextField.setVisible(true);
+        qtyTextField.setEditable(true);
         itemTextField.setText("");
         totalTextField.setText("");
 
